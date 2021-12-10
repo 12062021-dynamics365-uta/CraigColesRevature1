@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Projectp0
 {
-    class Class1
+    class Shopping
     {
+        public string ShoppingCartId { get; set; }
+
+        public void AddToCart(int id)
+        {
+
+
+
+        }
+    
     }
 }

@@ -8,5 +8,8 @@ namespace Projectp0
 {
     class Stores
     {
+        public string storeName { get; set; }
+
+        List<String> storeList = new List<String> 
     }
 }
