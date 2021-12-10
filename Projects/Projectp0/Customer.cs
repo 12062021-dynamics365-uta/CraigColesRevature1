@@ -8,5 +8,8 @@ namespace Projectp0
 {
     class Customer
     {
+        public string cusName { get; set; }
+        public long id { get; set; }
+    
     }
 }

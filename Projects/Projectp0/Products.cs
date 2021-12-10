@@ -8,5 +8,8 @@ namespace Projectp0
 {
     class Products
     {
+        public string proName { get; set; }
+        public double price { get; set; }
+    
     }
 }
