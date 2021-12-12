@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace Projectp0
 {
-    class Customer
+    internal class Customer
     {
-        public string cusName { get; set; }
-        public long id { get; set; }
+        public string Name;
+        public Customer(string name)
+        {
+            Name = name;
+        }
+
+        
+        
     
     }
 }

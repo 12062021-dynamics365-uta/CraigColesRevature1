@@ -10,6 +10,8 @@ namespace Projectp0
     {
         public string proName { get; set; }
         public double price { get; set; }
+
+        public string description { get; set; }
     
     }
 }
