@@ -24,6 +24,7 @@ namespace Projectp0
 
             List<Customer> shoppers = new List<Customer>();
             Console.WriteLine($"Name stored as: {lastName} {firstName}");
+            Console.WriteLine(shoppers);
             
             // this will save the name as a new customer
             StoreLogic newCust = new StoreLogic(firstName, lastName);
@@ -38,34 +39,51 @@ namespace Projectp0
                 storeList.Add("2.) Best Buy");
                 storeList.Add("3.) Guitar Center");
 
-            storeChoice cusChoice = storeChoice.invalid;
+                StoreChoice cusChoice = StoreChoice.invalid;
 
-                
+           // while (cusChoice != StoreChoice.invalid)
+            //{
 
-            do
-            {
-                Console.WriteLine("Now, " + firstName + " which store would you like to shop from today?");
-
-
-                //interate through store list to display to user
-                foreach (string store in storeList)
+                do
                 {
-                    Console.WriteLine(store);
+                    Console.WriteLine("Now, " + firstName + " which store would you like to shop from today?");
+
+
+                    //interate through store list to display to user
+                    foreach (string store in storeList)
+                    {
+                        Console.WriteLine(store);
+                    }
+
+                    string cusInput = Console.ReadLine();
+                    cusChoice = newCust.storeGetCustomerChoice(cusInput);
+
+                    if (cusChoice == StoreChoice.invalid)
+                    {
+                        Console.WriteLine("Please select a store option.");
+                    }
+
+                    Console.WriteLine($"Customer entered: {cusInput}");
+                } while (cusChoice == StoreChoice.invalid);
+
+
+                if(cusChoice == StoreChoice.Kroger)
+                {
+                    Console.WriteLine("You choose to shop at Kroger!");
+                }
+                else if (cusChoice == StoreChoice.BestBuy)
+                {
+
+
+                }
+                else if (cusChoice == StoreChoice.GuitarCenter)
+                {
+
+
                 }
 
-                string cusInput = Console.ReadLine();
-                cusChoice = newCust.GetCustomerChoice(cusInput);
 
-                if(cusChoice == cusChoice.invalid)
-                {
-                    Console.WriteLine
-                }
-
-                Console.WriteLine($"You choose: {storeName}");
-            }while (cusChoice == storeChoice.invalid)
-            
-                
-
+           // }
                
 
                 

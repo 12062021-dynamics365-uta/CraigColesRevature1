@@ -17,6 +17,7 @@ namespace Projectp0
         public StoreLogic()
         {
             customers = new List<Customer>();
+
         }
         public StoreLogic(string fname, string lname)
         {
@@ -61,9 +62,12 @@ namespace Projectp0
         {
             int choiceNumber = 0;
             bool isConverted = false;
-
-
-
+            isConverted = Int32.TryParse(choice, out choiceNumber);
+            if (!isConverted || choiceNumber < 1 || choiceNumber > 3)
+            {
+                return StoreChoice.invalid;
+            }
+            return (StoreChoice)choiceNumber;
         }
 
     }
