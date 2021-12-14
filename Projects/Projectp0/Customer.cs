@@ -8,10 +8,15 @@ namespace Projectp0
 {
     internal class Customer
     {
-        public string Name;
-        public Customer(string name)
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+
+        public Customer(string first, string last)
         {
-            Name = name;
+            first = FirstName;
+            last = LastName;
         }
 
         

@@ -8,23 +8,39 @@ namespace Projectp0
 {
     internal class Stores
     {
-        public string storeName { get; set; }
+        public string storeName1 { get; set; }
+
+        public string storeName2 { get; set; }
+
+        public string storeName3 { get; set; }
+
+        public List<Stores> StoreList { get; set; }
         public List<Products> ProductList { get; set; }
 
 
-        // List<String> storeList = new List<String>();
+        
 
         public Stores()
         {
-
+            //contructing store list
+            StoreList = new List<Stores>();
             
-            ProductList = new List<Products>();
+
+            //constructtion product list
+           // ProductList = new List<Products>();
 
 
         }
 
+       
+
+        
+
+        
+        
+
           
-        //Dictionary<string, List<string>> storeDic = new Dictionary<string, List<string>>();
+        
     }
 
         
