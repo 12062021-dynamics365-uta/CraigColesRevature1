@@ -10,8 +10,9 @@ namespace Projectp0
         
         static void Main(string[] args)
         {
-            
-            
+
+            StoreLogic checkChoice = new StoreLogic();
+            Products p = new Products();
             
             
             Console.WriteLine("Hello, customer! What is your first name? ");
@@ -22,17 +23,37 @@ namespace Projectp0
 
             Customer c = new Customer(firstName, lastName);
 
-            List<Customer> shoppers = new List<Customer>();
-            Console.WriteLine($"Name stored as: {lastName} {firstName}");
-            Console.WriteLine(shoppers);
+            //List<Customer> shoppers = new List<Customer>();
+           
+            //logging new customer to linked library
+            //Console.WriteLine($"Name stored as: {lastName}, {firstName}");
+
             
+
+
+
             // this will save the name as a new customer
-            StoreLogic newCust = new StoreLogic(firstName, lastName);
+            Customer newCust = new Customer(firstName, lastName);
+            newCust.saveCustomer(firstName, lastName);
 
 
-           // do
-           // {
-                Stores stores = new Stores();
+           /* Console.WriteLine("Hello, customer! What is your first name? ");
+            string firstName2 = Console.ReadLine();
+
+            Console.WriteLine("Cool! Last name?");
+            string lastName2 = Console.ReadLine();
+            Customer newCust2 = new Customer(firstName2, lastName2);
+            newCust2.saveCustomer(firstName2, lastName2);*/
+
+
+            //foreach (var tempCust in )
+            // {
+            //    Console.WriteLine();
+            // }
+
+            // do
+            // {
+            Stores stores = new Stores();
 
                 List<string> storeList = new List<string>();
                 storeList.Add("1.) Kroger");
@@ -56,7 +77,7 @@ namespace Projectp0
                     }
 
                     string cusInput = Console.ReadLine();
-                    cusChoice = newCust.storeGetCustomerChoice(cusInput);
+                    cusChoice = checkChoice.storeGetCustomerChoice(cusInput);
 
                     if (cusChoice == StoreChoice.invalid)
                     {
@@ -70,10 +91,11 @@ namespace Projectp0
                 if(cusChoice == StoreChoice.Kroger)
                 {
                     Console.WriteLine("You choose to shop at Kroger!");
+                    p.getProducts();
                 }
                 else if (cusChoice == StoreChoice.BestBuy)
                 {
-
+                    
 
                 }
                 else if (cusChoice == StoreChoice.GuitarCenter)
