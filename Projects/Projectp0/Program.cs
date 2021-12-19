@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Data.SqlClient;
 
 namespace Projectp0
 {
@@ -11,10 +12,18 @@ namespace Projectp0
         static void Main(string[] args)
         {
 
+            Class1 test = new Class1();
+            test.connectSQL();
+            test.something();
+
             StoreLogic checkChoice = new StoreLogic();
-            Products p = new Products();
-            
-            
+            Products p = new Products(1);
+            bool logout = false;
+
+
+            //log in here?? 
+            //do
+            logout = false;
             Console.WriteLine("Hello, customer! What is your first name? ");
             string firstName = Console.ReadLine();
             
@@ -56,9 +65,9 @@ namespace Projectp0
             Stores stores = new Stores();
 
                 List<string> storeList = new List<string>();
-                storeList.Add("1.) Kroger");
-                storeList.Add("2.) Best Buy");
-                storeList.Add("3.) Guitar Center");
+                storeList.Add("1.) Saginaw, MI ");
+                storeList.Add("2.) Southfield, MI");
+                storeList.Add("3.) Detroit, MI");
 
                 StoreChoice cusChoice = StoreChoice.invalid;
 
@@ -67,8 +76,8 @@ namespace Projectp0
 
                 do
                 {
-                    Console.WriteLine("Now, " + firstName + " which store would you like to shop from today?");
-
+                    Console.WriteLine("Now, " + firstName + " which Guitar Center location would you like to shop from today?");
+                    
 
                     //interate through store list to display to user
                     foreach (string store in storeList)
@@ -88,19 +97,20 @@ namespace Projectp0
                 } while (cusChoice == StoreChoice.invalid);
 
 
-                if(cusChoice == StoreChoice.Kroger)
+                if(cusChoice == StoreChoice.Saginaw)
                 {
-                    Console.WriteLine("You choose to shop at Kroger!");
-                    p.getProducts();
+                    Console.WriteLine("You choose to shop at the Saginaw Location!");
+                    p.getSaginawProducts();
                 }
-                else if (cusChoice == StoreChoice.BestBuy)
+                else if (cusChoice == StoreChoice.Southfield)
                 {
+                    Console.WriteLine("Best Buy it is!");
                     
 
                 }
-                else if (cusChoice == StoreChoice.GuitarCenter)
+                else if (cusChoice == StoreChoice.Detriot)
                 {
-
+                    
 
                 }
 

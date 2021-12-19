@@ -36,7 +36,30 @@ namespace Projectp0
             return (StoreChoice)choiceNumber;
         }
 
+        public void startNewSession()
+        {
+            //this.currentSesh = null;
+            //this.currentcustomer = null;
+        }
+
+
+        //This will save the current shopping session
+        public void SaveOrder()
+        {
+
+        }
+
+        
+
     }
 
-    
+    internal class DataManager
+    {
+     
+        
+
+    }
+
+
+
 }

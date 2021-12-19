@@ -4,19 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Projectp0
+namespace Storage
 {
-    internal class Shopping
+    class DataManager
     {
-        public string ShoppingCartId { get; set; }
-
-        public void AddToCart(int id)
+        
+        public void LoadProducts()
         {
 
-            
+
 
         }
 
+        public void SaveProducts()
+        {
+
+
+
+        }
+
+        
+
+
+    
     
     }
 }

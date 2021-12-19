@@ -9,11 +9,11 @@ namespace Projectp0
     public enum StoreChoice
     {
 
-        Kroger = 1,
+        Saginaw = 1,
 
-        BestBuy = 2,
+        Southfield = 2,
 
-        GuitarCenter = 3,
+        Detriot = 3,
 
         invalid = 4
 
