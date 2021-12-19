@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Projectp0
+namespace NewP0
 {
-    internal class Customer
+    public class Customer
     {
         public List<Customer> customers; //All new customers
 
@@ -17,34 +17,10 @@ namespace Projectp0
         private Customer currentLoggedCustomer;
 
 
-
-
         public Customer(string first, string last)
         {
             first = FirstName;
             last = LastName;
-        }
-
-        public void saveCustomer(string first, string last)
-        {
-
-
-            List<Customer> customers = new List<Customer>();// the new customer list
-
-           
-            Customer newCustomer = new Customer(first, last); //creates new customer
-            customers.Add(newCustomer); //this will add the new customer to the list
-
-            foreach (var cust in customers)
-            {
-                Console.WriteLine($"New User: {first} {last} ");
-               // if(first == first1)
-               // {
-
-                //}
-                
-            }
-           
         }
 
         internal bool Login()
@@ -54,7 +30,7 @@ namespace Projectp0
 
         //will see if the logged in customer already exists
         //if so, will assign that player to currentLoggedInPlayer
-        internal void Login(string custFName, string custLName)
+        public void Login(string first, string last)
         {
             /*foreach(Customer p in customers)
             {
@@ -66,13 +42,13 @@ namespace Projectp0
             }*/
 
             //linked library 
-            Customer c1 = customers.Where(c1 => c1.FirstName == custFName && c1.LastName == custLName).FirstOrDefault();
+            Customer c1 = customers.Where(c1 => c1.FirstName == first && c1.LastName == last).FirstOrDefault();
             if (c1 == null)
             {
-                Customer c = new Customer(custFName, custLName);
+                Customer c = new Customer(first, last);
                 this.currentLoggedCustomer = c;
                 customers.Add(c);
-                
+
             }
             else
             {
@@ -80,11 +56,6 @@ namespace Projectp0
             }
 
         }
-
-
-
-
-
 
     }
 }

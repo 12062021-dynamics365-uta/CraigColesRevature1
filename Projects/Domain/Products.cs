@@ -4,61 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Projectp0
+namespace Domain
 {
-    internal class Products : Stores
+    public class Products 
     {
         public string proName { get; set; }
         public decimal price { get; set; }
         public int quantity { get; set; }
-        public int productNum { get; set; }
+        public int productID { get; set; }
 
+        
 
-        //List<Products> pro = new List<Products>();
-        public Products(int productNum)
+        public Products(int productID)
         {
-             productNum = 1;
-        }
 
-        public void getSaginawProducts()
-        {
-            Dictionary<string, double> saginawProducts = new Dictionary<string, double>();
-
-            //{"1.)", new Products { proName = "Bananas", price = .69 } },
-            //{2, new Products { proName = "Bananas", price = .69 } },
-            saginawProducts.Add("Roland 4-piece drumkit", 499.00 );
-
-            saginawProducts.Add("Squire Fender Guitar", 350.00);
-            saginawProducts.Add("Guitar picks", 1.69);
-
-            foreach (var p in saginawProducts)
-            {
-                Console.WriteLine($"Product {1 + productNum++}: {p}");
-
-            }
-        }
-
-        public void getSouhtfieldProducts()
-        {
-            Dictionary<string, double> southfieldProducts = new Dictionary<string, double>();
-
-            southfieldProducts.Add("Roland 4-piece drumkit", 499.00);
-
-            southfieldProducts.Add("Squire Fender Guitar", 350.00);
-            southfieldProducts.Add("", 1.69);
-
-            foreach (var s in southfieldProducts)
-            {
-                Console.WriteLine($"Product {1 + productNum++}: {s}");
-
-            }
-
-
-
+           
 
         }
 
     }
+
+    
 
     internal static class Inventory
     {
@@ -84,17 +50,17 @@ namespace Projectp0
 
         private static void Load()
         {
-           // Products = DataManager.LoadProducts();
+            // Products = DataManager.LoadProducts();
         }
 
         private static void Save()
         {
-           // DataManager.SaveProducts(Products);
+            // DataManager.SaveProducts(Products);
         }
 
         public static void RemoveProduct(int productId)
         {
-           // Inventory.Products.RemoveAll(x => x.Id == productId);
+            Inventory.Products.RemoveAll(x => x.productID == productId);
             Save();
         }
 
@@ -123,15 +89,4 @@ namespace Projectp0
             Save();
         }
     }
-
-
-
-
 }
-
-
-
-
-
-    
-
