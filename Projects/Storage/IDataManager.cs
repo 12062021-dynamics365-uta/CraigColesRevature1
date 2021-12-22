@@ -6,27 +6,9 @@ using System.Threading.Tasks;
 
 namespace Storage
 {
-    class DataManager
+    interface IDataManager
     {
         
-        public void LoadProducts()
-        {
-
-
-
-        }
-
-        public void SaveProducts()
-        {
-
-
-
-        }
-
-        
-
-
-    
     
     }
 }

@@ -2,12 +2,22 @@
 using System.Data.SqlClient;
 using Domain;
 using Storage;
+using System.Collections.Generic;
 
 
 namespace NewP0
 {
     internal class Program 
     {
+        public static int CartItemID { get; set; }
+        public static int LineID { get; set; }
+        public static int CartID { get;  set; }
+        public static int ProductID { get; set; }
+        public static int ItemQuantity { get; set; }
+        public static float ItemTotal { get; set; }
+        
+        
+        
         static void Main(string[] args)
         {
             
@@ -51,8 +61,13 @@ namespace NewP0
                     string newLastName = Console.ReadLine();
 
                     string newLoginName = newFirstName + newLastName;
+
+                    //Must be worked on for p1 project
+                    //ConnectionString is being lost?
+                    DatabaseAccess newCustID = new DatabaseAccess();
+                    int CustomerID = newCustID.getNextCustomerID();
                     DatabaseAccess newLogin = new DatabaseAccess();
-                    newLogin.addUser(newFirstName, newLastName, newLoginName);
+                    newLogin.addCustomer(CustomerID, newFirstName, newLastName, newLoginName);
 
                     exitLogin = true;
                     
@@ -66,36 +81,108 @@ namespace NewP0
              } while (!exitLogin);
 
 
+            bool exitStoreLocationSelection = false;
 
-            //Ask user which location
-            Console.WriteLine("Welcome, which location would you like to shop from?\n");
-            DatabaseAccess storeLocation = new DatabaseAccess();
-            storeLocation.getStores();
-
-            string storeSelect = Console.ReadLine();
-
-            if(storeSelect == "1")
+            do
             {
-                DatabaseAccess displayProducts1 = new DatabaseAccess();
-                displayProducts1.displayProducts1();
-            }
-            else if(storeSelect == "2")
+                //Ask user which location
+                Console.WriteLine("Welcome, which location would you like to shop from?\n");
+                DatabaseAccess storeLocation = new DatabaseAccess();
+                storeLocation.getStores();
+
+                //user location input
+                string storeSelect = Console.ReadLine();
+                int convertNumber = -1;
+                bool convertBool = false;
+                convertBool = Int32.TryParse(storeSelect, out convertNumber);
+
+                if (convertNumber > 0)
+                {
+                    
+                    DatabaseAccess displayProducts1 = new DatabaseAccess();
+                    //Display products to customer
+                    displayProducts1.displayProducts1(convertNumber);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again!");
+                }
+            } while (exitStoreLocationSelection);
+
+
+
+            //Asking user what items they would like to add to their cart.
+
+
+
+            DataManager dm = new DataManager();
+            do
             {
+                //Ask user what item they would like to add to their cart
+                Console.Write("Select items to add to your cart: (Type the corresponding numeric value)");
+                int itemSelect = Convert.ToInt32(Console.ReadLine());
+                
+                List<CartItems> cartItems = dm.addItemToCart();
+               
+                //ShoppingCart.addItemToCart(cartItemID, LineID, CartID, ProductID, ItemQuantity, ItemTotal);
 
-            }
-            else if(storeSelect == "3")
-            {
+                if (itemSelect == 1)
+                {
+                    //create new cart
+                    //ShoppingCart.newCart();
+                    //add item to cart
 
-            }
-
-            //Stores stores = new Stores();
-
-
+                    
 
 
+                }
+                else if (itemSelect == 2)
+                {
+                    
+                }
+                else if (itemSelect == 3)
+                {
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input.");
+                }
 
-            //
+                
+
+            } while (cart.Count <= 50);
+            ShoppingCart addItem = new ShoppingCart();
+           
             
+
+            //do
+           // {
+                
+                
+                
+                
+                
+
+
+           // if (itemSelect == itemID)?
+           // {
+               // selectItem.addItemToCart();
+              //  itemSelect = itemID;
+           // }
+            //else
+            // }
+            // while ();
+
+
+
+
+
+
+
+
+
+
         }
     }
 }

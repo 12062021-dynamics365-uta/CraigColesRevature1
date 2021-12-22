@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
     public class Products 
     {
+        
+        
         public string proName { get; set; }
         public decimal price { get; set; }
         public int quantity { get; set; }
         public int productID { get; set; }
+
+        public string CartItemID { get; set; }
+        public string CartID { get; set; }
 
         
 
@@ -58,17 +64,19 @@ namespace Domain
             // DataManager.SaveProducts(Products);
         }
 
-        public static void RemoveProduct(int productId)
+        public static void RemoveItem(int productId)
         {
             Inventory.Products.RemoveAll(x => x.productID == productId);
             Save();
         }
 
-        public static void Add(Products product)
+        public static void AddItem(Products product)
         {
             Products.Add(product);
             Save();
         }
+
+       
         public static int GetProductCount()
         {
             return Inventory.Products.Count();
@@ -79,14 +87,19 @@ namespace Domain
             return Inventory.Products.Select(x => x.quantity).Sum();
         }
 
-        public static decimal GetInventoryValue()
+        public static decimal GetOrderValue()
         {
             return Inventory.Products.Select(x => (x.price * x.quantity)).Sum();
         }
-        public static void ClearInventory()
+        public static void ClearOrder()
         {
             Inventory.Products.Clear();
             Save();
+        }
+
+        public static void lookUpPastOrders()
+        {
+            
         }
     }
 }
