@@ -294,8 +294,7 @@ class newFamily extends family{
     }
 }
 
-let fam = new family('Alan', 'Carol', 'Julie', 'Stephanie', 'Craig');
-console.log()
+
 
 
 

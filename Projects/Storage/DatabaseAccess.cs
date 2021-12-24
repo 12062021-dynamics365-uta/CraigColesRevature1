@@ -264,7 +264,7 @@ namespace Storage
                 while (dataReader.Read())
                 {
                     CartID = (Convert.ToInt32(dataReader[0].ToString()));
-                    Console.WriteLine(CartID);
+                    //Console.WriteLine(CartID);
                 }
                 dataReader.Close();
             }

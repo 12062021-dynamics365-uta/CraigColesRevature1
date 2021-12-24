@@ -139,24 +139,25 @@ namespace NewP0
 
             //int CartID = Convert.ToInt32(Console.ReadLine());
 
-
-            // do
-            // {
-            //Ask user what item they would like to add to their cart
-            Console.Write("Select items to add to your cart: (Type the corresponding numeric value)");
+            bool addMoreToCart = false;
+            do
+            {
+                //Ask user what item they would like to add to their cart
+                Console.Write("Select items to add to your cart: (Type the corresponding numeric value)");
                 int itemSelect = Convert.ToInt32(Console.ReadLine());
-            Console.Write("How many would you like to add? ");
+                Console.Write("How many would you like to add? ");
                 int itemQuantity = Convert.ToInt32(Console.ReadLine());
-                
 
-                
+
+
                 //List<CartItems> cartItems = dm.addItemToCart();
 
-                
+
 
                 //ShoppingCart.addItemToCart(cartItemID, LineID, CartID, ProductID, ItemQuantity, ItemTotal);
                 int itemCount = 0;
-                foreach (Products p in dm.currentStore.products) {
+                foreach (Products p in dm.currentStore.products)
+                {
 
                     //if the customers input matches a specific product ID
                     if (itemSelect == p.productID)
@@ -171,12 +172,70 @@ namespace NewP0
                     }
                 }
 
-                    if(itemCount == 0)
+                if (itemCount == 0)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+                
+
+            bool mainMenu = true;
+                do
+                {
+                    //Ask the customer if they would like to add more items to their cart, view cart, delete products
+                    Console.WriteLine("What would you like to do next with your order? \n " +
+                                       "1.) Add Item \n " +
+                                       "2.) View cart \n " +
+                                       "3.) Delete Item \n " +
+                                       "4.) Delete whole cart \n " + //deleteCartItems
+                                       "5.) Checkout ");
+                    string nextCartAction = (Console.ReadLine().ToString());
+
+                    if (nextCartAction == "1")
                     {
-                        Console.WriteLine("Invalid input.");
+                        addMoreToCart = false;
+                        mainMenu = false;
+                        //break;
+
                     }
-                    DatabaseAccess viewItems = new DatabaseAccess();
-                    viewItems.viewItemsInCart(CartID);
+                    else if (nextCartAction == "2")
+                    {
+
+                        DatabaseAccess viewItems = new DatabaseAccess();
+                        viewItems.viewItemsInCart(CartID);
+
+                    }
+                    else if (nextCartAction == "3")
+                    {
+
+                    }
+                    else if (nextCartAction == "4")
+                    {
+
+                    }
+                    else if (nextCartAction == "5")
+                    {
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option. Try again");
+
+                    }
+                }
+                while (mainMenu);
+
+            } while (!addMoreToCart);
+
+
+
+
+
+
+
+
+        } //main method
+                
+
                         
 
 
@@ -224,6 +283,6 @@ namespace NewP0
 
 
 
-        }
-    }
-}
+        }//block end of class
+    }//end of namespace
+
