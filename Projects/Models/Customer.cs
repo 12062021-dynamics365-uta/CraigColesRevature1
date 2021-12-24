@@ -10,11 +10,15 @@ namespace NewP0
     {
         public List<Customer> customers; //All new customers
 
+        public int CustomerID { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        private Customer currentLoggedCustomer;
+        public string LoginName { get; set; }
+
+        public Customer currentLoggedCustomer;
 
 
         public Customer(string first, string last)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    class Stores
+    public class Stores
     {
         
         public int StoreNum { get; set; }
@@ -16,8 +16,11 @@ namespace Domain
 
         public List<Stores> StoreList { get; set; }
 
+        public List<Products> products { get; set; }
+
         public Stores()
         {
+            products = new List<Products>();
             StoreList = new List<Stores>();
         }
 

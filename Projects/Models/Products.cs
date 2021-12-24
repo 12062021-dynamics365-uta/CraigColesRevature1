@@ -11,17 +11,19 @@ namespace Domain
     {
         
         
+        public int productID { get; set; }
         public string proName { get; set; }
         public decimal price { get; set; }
-        public int quantity { get; set; }
-        public int productID { get; set; }
+        public string ProductDescription { get; set; }
+        public int ProductQuantity { get; set; }
 
-        public string CartItemID { get; set; }
-        public string CartID { get; set; }
+
+        //public string CartItemID { get; set; }
+        //public string CartID { get; set; }
 
         
 
-        public Products(int productID)
+        public Products()
         {
 
            
@@ -32,7 +34,7 @@ namespace Domain
 
     
 
-    internal static class Inventory
+    /*internal static class Inventory
     {
         public static List<Products> products;
         public static List<Products> Products
@@ -56,12 +58,12 @@ namespace Domain
 
         private static void Load()
         {
-            // Products = DataManager.LoadProducts();
+             Products = DataManager.LoadProducts();
         }
 
         private static void Save()
         {
-            // DataManager.SaveProducts(Products);
+             DataManager.SaveProducts(Products);
         }
 
         public static void RemoveItem(int productId)
@@ -100,6 +102,6 @@ namespace Domain
         public static void lookUpPastOrders()
         {
             
-        }
-    }
+        }*/
+    
 }
