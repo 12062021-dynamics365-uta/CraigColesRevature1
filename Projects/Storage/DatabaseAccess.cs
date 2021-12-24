@@ -16,9 +16,9 @@ namespace Storage
 
         public DatabaseAccess()
         {
-            this.connect = new SqlConnection(database);
-            //open
-            //this._mapper
+            this.connect = new SqlConnection(this.database);
+            connect.Open();
+            this._mapper = new Mapper();
         }
 
 
@@ -29,7 +29,7 @@ namespace Storage
             using (connect)
             {
                 //Opening the SqlConnection
-                connect.Open();
+                //connect.Open();
                         //Creating SQL command to then read and display to active customers to the current user              
                 using (SqlCommand command = new SqlCommand(query, connect))
                 {
@@ -50,10 +50,31 @@ namespace Storage
             }
         }
 
-        internal List<CartItems> addItemToCart()
+        public int getActiveCustomerID(string FirstName, string LastName)
         {
-            throw new NotImplementedException();
+            int CustomerID = 0;
+            string query = $"SELECT CustomerID FROM Customers WHERE FirstName = '{FirstName}' AND LastName = '{LastName}';";
+           
+            using (SqlCommand command = new SqlCommand(query, this.connect))
+            {
+                SqlDataReader dataReader = command.ExecuteReader();
+                //CustomerID = this._mapper.EntitytoActiveCustomer(dataReader);
+                while (dataReader.Read())
+                {
+                    for (int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        CustomerID = Convert.ToInt32(dataReader[0].ToString());
+
+                    };
+                }
+
+                dataReader.Close();
+            }
+            return CustomerID;
+
+
         }
+       
 
         public int getNextCustomerID()
         {
@@ -65,7 +86,7 @@ namespace Storage
 
             using (connect)
             {
-                connect.Open();
+                //connect.Open();
                 using (SqlCommand command = new SqlCommand(query, connect))
                 {
                     using (SqlDataReader dataRead = command.ExecuteReader())
@@ -81,13 +102,19 @@ namespace Storage
 
                             }
                         }
+                        dataRead.Close();
                     }
 
                 }
+                
 
             }
             return CustomerID;
         }
+       
+
+
+
         
 
         public void addCustomer(int CustomerID, string FirstName, string LastName, string LoginName)
@@ -142,7 +169,7 @@ namespace Storage
 
                 using (connect)
                 {
-                    connect.Open();
+                   // connect.Open();
                     using (SqlCommand command = new SqlCommand(query, connect))
                     {
                         using (SqlDataReader dataRead = command.ExecuteReader())
@@ -163,21 +190,30 @@ namespace Storage
 
         }
 
-        public void displayProducts1(int StoreNum)
+        public List<Products> displayProducts1(int StoreNum)
         {
             int productCount = 1;
             
-            string query = "SELECT ProductName, 'Cost: ', Price, 'Quantity: ', ProductQuantity  " +
+            string query = "SELECT p.ProductID, ProductName, Price, ProductDescription, ProductQuantity " +
                            "FROM Inventory " +
                            "LEFT OUTER JOIN Stores " +
                            "ON Stores.StoreNum = Inventory.StoreNum " +
-                           "LEFT OUTER JOIN Products " +
-                           "ON Products.ProductID = Inventory.ProductID " +
+                           "LEFT OUTER JOIN Products p " +
+                           "ON p.ProductID = Inventory.ProductID " +
                            "WHERE Inventory.StoreNum = " + StoreNum + " ;";
 
-            using (connect)
+            List<Products> products = new List<Products>();
+            using (SqlCommand command = new SqlCommand(query, this.connect))
             {
-                connect.Open();
+                SqlDataReader dataReader = command.ExecuteReader();
+                products = this._mapper.EntityToProducts(dataReader);
+                dataReader.Close();
+            }
+            return products;
+
+            /*using (connect)
+            {
+                //connect.Open();
                 using (SqlCommand command = new SqlCommand(query, connect))
                 {
                     using (SqlDataReader productReader = command.ExecuteReader())
@@ -193,72 +229,111 @@ namespace Storage
                         }
                     }
                 }
-            }
+            }*/
         }
 
-        public void newCart(int CartID, int StoreID, int CustomerID, float CartTotal)
+        public int newCart(int StoreNum, int CustomerID, decimal CartTotal)
         {
-            string query = "INSERT INTO ShoppingCart(CartID, StoreID, CustomerID, CartTotal) values('" + CartID + "', '" + StoreID + "', '" + CustomerID + "', '" + CartTotal + "')";
+            int CartID = 0;
+            string query = "INSERT INTO ShoppingCart(StoreNum, CustomerID, CartTotal) values('" + StoreNum + "', '" + CustomerID + "', '" + CartTotal + "')";
+            List<ShoppingCart> cart = new List<ShoppingCart>();
+            using (SqlCommand command = new SqlCommand(query, this.connect))
+            {
+                SqlDataReader dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+
+                    for (int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        Console.WriteLine(dataReader.GetValue(i));
+
+                    };
+                }
+                //cart = this._mapper.EntityToCart(dataReader);
+                dataReader.Close();
+            }
+
+                    
+
+
+            string query2 = "SELECT CartID FROM ShoppingCart;";
+            using (SqlCommand command = new SqlCommand(query2, this.connect))
+            {
+                SqlDataReader dataReader = command.ExecuteReader();
+                //cart = this._mapper.EntityToCart(dataReader);
+                while (dataReader.Read())
+                {
+                    CartID = (Convert.ToInt32(dataReader[0].ToString()));
+                    //Console.WriteLine(CartID);
+                }
+                dataReader.Close();
+            }
+            return CartID;
+            
+
         }
+        public void  addItemToCart(Guid LineID, int CartID, int ProductID, int ItemQuantity, decimal ItemTotal)
+        {
+            string query = $"INSERT INTO ShoppingCartItems(LineID, CartID, ProductID, ItemQuantity, ItemTotal) values('{LineID} ',' {CartID} ', ' {ProductID} ', ' {ItemQuantity} ', ' {ItemTotal} ');";
+            List<CartItems> cartItems = new List<CartItems>();
+            SqlCommand command = new SqlCommand(query, this.connect);
+                //{
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        for (int i = 0; i < dataReader.FieldCount; i++)
+                        {
+                            Console.WriteLine(dataReader.GetValue(i));
+                        };
+
+                    }
+                //cartItems = this._mapper.EntityToCartItem(dataReader);
+                dataReader.Close();
+                //}
+        }
+
+
 
         public void deleteCart(int CartID)
         {
             string query = "DELETE ShoppingCart WHERE CartID = " + CartID + " ;";
-        }
-
-
-
-
-        public List<CartItems> addItemToCart(int CartItemID, int LineID, int CartID, int ProductID, int ItemQuantity, float ItemTotal)
-        {
-
             
-                string query = "INSERT INTO ShoppingCartItems(CartItemID, LineID, CartID, ProductID, ItemQuantity, ItemTotal) values('" + CartItemID + "', '" + LineID + "', '" + CartID + "', '" + ProductID + "', '" + ItemQuantity + "', '" + ItemTotal + "')";
-                List<CartItems> cartItems = new List<CartItems>();
-                using (SqlCommand command = new SqlCommand(query, this.connect))
-                {
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    cartItems = this._mapper.EntityToCartItem(dataReader);
-                    this.connect.Close();
-                }
-            return cartItems;
-            /*if (CartItemID > 0)
+            using (SqlCommand command = new SqlCommand(query, this.connect))
             {
-                //int CartItemID, int LineID, int CartID, int ProductID, int ItemQuantity, float ItemTota
-                using (connect)
-                {
-                    connect.Open();
-                    using (SqlCommand command = new SqlCommand(query, connect))
-                    {
-                        using (SqlDataReader dataRead = command.ExecuteReader())
-                        {
-                            while (dataRead.Read())
-                            {
-                                for (int i = 0; i < dataRead.FieldCount; i++)
-                                {
-
-                                    Console.WriteLine(dataRead.GetValue(i));
-                                    Console.WriteLine("Your selection has been aded to the cart.");
-
-                                }
-                            }
-                        }
-
-                    }
-
-                }
-
-
+                SqlDataReader dataReader = command.ExecuteReader();
+                
+                dataReader.Close();
             }
-            else
-            {
-                Console.WriteLine("Error");
-            }
-            return 0;*/
-
-
-
         }
+
+
+
+        public void order(int CartID)
+        {
+            string query = "INSERT INTO Orders (StoreNum, CustomerID, OrderTotal);";
+            List<Orders> order = new List<Orders>();
+            SqlCommand command = new SqlCommand(query, this.connect);
+            //{
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.WriteLine(dataReader.GetValue(i));
+                };
+
+            }
+
+            string query1 = "SELECT StoreNum, CustomerID, OrderTotal FROM ShoppingCart WHERE CartID = " + CartID + ";";
+        }
+
+
+        public void orderItems(int CartID)
+        {
+            //INSERT INTO OrderItems (LineID, OrderID, ProductID, ItemQuantity, ItemTotal)
+            //SELECT LineID, OrderID, ProductID, ItemQuantity, ItemTotal FROM ShoppingCartItems WHERE CartID = " + CartID + "
+        }
+
 
         public void changeQuantityInCart(int CartItemID, int ItemQuantity, float ItemTotal)
         {
@@ -275,7 +350,6 @@ namespace Storage
         public void viewCart(int CartID)
         {
 
-
             string query = "SELECT StoreLocation, CustomerName, ' Total: ', CartTotal" +
                            "FROM ShoppingCart " +
                            "LEFT OUTER JOIN Stores " +
@@ -283,16 +357,31 @@ namespace Storage
                            "LEFT OUTER JOIN Customers " +
                            "ON Customers.CustomerID = ShoppingCart.CustomerID " +
                            "WHERE CartID = " + CartID + " ;";
+
+
         }
 
         public void viewItemsInCart(int CartID)
         {
-            string query = "SELECT LineID, ProductName, ' Quantity: ', ItemQuantity, ' Total: ', ItemTotal" +
+            string query = "SELECT LineID, ProductName, ItemQuantity, ItemTotal " +
                            "FROM ShoppingCartItems " +
                            "LEFT OUTER JOIN Products " +
                            "ON Products.ProductID = ShoppingCartItems.ProductID " +
                            "WHERE CartID = " + CartID +
                            "ORDER BY LineID ;";
+            List<CartItems> itemsInCart = new List<CartItems>();
+            SqlCommand command = new SqlCommand(query, this.connect);
+            
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.WriteLine(dataReader.GetValue(i));
+                };
+
+            }
         }
 
 

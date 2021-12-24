@@ -24,7 +24,18 @@ namespace Domain
 
         public decimal ItemTotal { get; set; }
 
-        
+        public int productID { get; set; }
+        public string proName { get; set; }
+        public decimal price { get; set; }
+        public string ProductDescription { get; set; }
+        public int ProductQuantity { get; set; }
+
+        public List<Products> cartItems { get; set; }
+
+        public CartItems()
+        {
+            cartItems = new List<Products>();
+        }
 
 
     }

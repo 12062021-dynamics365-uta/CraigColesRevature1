@@ -9,15 +9,17 @@ namespace Domain
 {
     public class ShoppingCart
     {
-
-        string database = "Data source = DESKTOP-58I9UJJ\\SQLEXPRESS; initial Catalog = ProjectP0; integrated security = true";
-        public SqlConnection connect;
-        private readonly Manager _mapper;
+       
+        
+        public int CartID { get; set; }
+        public int StoreID { get; set; }
+        public int CustomerID {get; set;}
+        public decimal CartTotal { get; set; }
+        
 
         public ShoppingCart()
         {
-            this.connect = new SqlConnection(database);
-            this._mapper = new Mapper();
+           
         }
 
 
