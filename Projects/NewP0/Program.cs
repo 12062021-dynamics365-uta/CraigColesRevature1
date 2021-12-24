@@ -185,9 +185,9 @@ namespace NewP0
                     Console.WriteLine("What would you like to do next with your order? \n " +
                                        "1.) Add Item \n " +
                                        "2.) View cart \n " +
-                                       "3.) Delete Item \n " +
+                                       "3.) Checkout \n " +
                                        "4.) Delete whole cart \n " + //deleteCartItems
-                                       "5.) Checkout ");
+                                       "5.) Delete an item ");
                     string nextCartAction = (Console.ReadLine().ToString());
 
                     if (nextCartAction == "1")
@@ -206,11 +206,11 @@ namespace NewP0
                     }
                     else if (nextCartAction == "3")
                     {
-
+                        //checkout
                     }
                     else if (nextCartAction == "4")
                     {
-
+                        //
                     }
                     else if (nextCartAction == "5")
                     {
@@ -224,7 +224,7 @@ namespace NewP0
                 }
                 while (mainMenu);
 
-            } while (!addMoreToCart);
+            } while (!  addMoreToCart);
 
 
 

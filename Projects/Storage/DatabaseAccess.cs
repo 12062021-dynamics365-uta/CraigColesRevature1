@@ -297,14 +297,34 @@ namespace Storage
         public void deleteCart(int CartID)
         {
             string query = "DELETE ShoppingCart WHERE CartID = " + CartID + " ;";
+            
+            using (SqlCommand command = new SqlCommand(query, this.connect))
+            {
+                SqlDataReader dataReader = command.ExecuteReader();
+                
+                dataReader.Close();
+            }
         }
 
 
 
         public void order(int CartID)
         {
-            //INSERT INTO Orders (StoreNum, CustomerID, OrderTotal)
-            //SELECT StoreNum, CustomerID, OrderTotal FROM ShoppingCart WHERE CartID = " + CartID + "
+            string query = "INSERT INTO Orders (StoreNum, CustomerID, OrderTotal);";
+            List<Orders> order = new List<Orders>();
+            SqlCommand command = new SqlCommand(query, this.connect);
+            //{
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.WriteLine(dataReader.GetValue(i));
+                };
+
+            }
+
+            string query1 = "SELECT StoreNum, CustomerID, OrderTotal FROM ShoppingCart WHERE CartID = " + CartID + ";";
         }
 
 
