@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    class Orders
+    public class Orders
     {
+        public int OrderID {get; set;}
         
+        public int StoreNum { get; set; }
+
+        public int CustomerID { get; set; }
+
+        Decimal OrderTotal { get; set; }
     
     }
 }

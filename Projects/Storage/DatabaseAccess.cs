@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Domain;
+using Models;
 
 namespace Storage
 {
@@ -21,6 +22,7 @@ namespace Storage
             this._mapper = new Mapper();
         }
 
+      
 
         public void displayActiveCustomers()
         {
@@ -133,7 +135,7 @@ namespace Storage
 
                 using (connect)
                 {
-                    connect.Open();
+                    //connect.Open();
                     using (command = new SqlCommand(query, connect))
                     {
                         using (SqlDataReader dataRead = command.ExecuteReader())
@@ -308,9 +310,9 @@ namespace Storage
 
 
 
-        public void order(int CartID)
+        public decimal getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal)
         {
-            string query = "INSERT INTO Orders (StoreNum, CustomerID, OrderTotal);";
+            string query = $"INSERT INTO Orders (CartID, StoreNum, CustomerID, OrderTotal) values('{CartID}','{StoreNum}', '{CustomerID}', '{OrderTotal}');";
             List<Orders> order = new List<Orders>();
             SqlCommand command = new SqlCommand(query, this.connect);
             //{
@@ -325,10 +327,17 @@ namespace Storage
             }
 
             string query1 = "SELECT StoreNum, CustomerID, OrderTotal FROM ShoppingCart WHERE CartID = " + CartID + ";";
+            using (command = new SqlCommand(query, this.connect))
+            {
+                dataReader = command.ExecuteReader();
+                
+                dataReader.Close();
+            }
+            return OrderTotal;
         }
 
 
-        public void orderItems(int CartID)
+        public void getOrderItems(int CartID)
         {
             //INSERT INTO OrderItems (LineID, OrderID, ProductID, ItemQuantity, ItemTotal)
             //SELECT LineID, OrderID, ProductID, ItemQuantity, ItemTotal FROM ShoppingCartItems WHERE CartID = " + CartID + "

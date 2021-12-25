@@ -23,7 +23,7 @@ namespace NewP0
         {
             Mapper mapper = new Mapper();
             DatabaseAccess dbAccess = new DatabaseAccess();
-            DataManager dm = new DataManager();
+            DataManager dm = new DataManager(dbAccess);
 
             //Welcome Customer
 
@@ -31,61 +31,73 @@ namespace NewP0
 
 
             //Login
+            bool notActiveCustomer = false;
             bool exitLogin = false;
             int CustomerID = 1;
             do
             {
-                Console.WriteLine("Are you any of these individuals? If so Login");
-                DatabaseAccess displayCurrentCustomers = new DatabaseAccess();
-                displayCurrentCustomers.displayActiveCustomers();
-                Console.WriteLine("Login or Create? (Type 1 to login, 2 to create)");
-                string logCreate = Console.ReadLine();
+                do
+                {
+                    Console.WriteLine("Are you any of these individuals? If so Login");
+                    DatabaseAccess displayCurrentCustomers = new DatabaseAccess();
+                    displayCurrentCustomers.displayActiveCustomers();
+                    Console.WriteLine("Login or Create? (Type 1 to login, 2 to create)");
+                    string logCreate = Console.ReadLine();
 
+
+                    if (logCreate == "1")
+                    {
+
+                        Console.WriteLine("Enter first name");
+                        string customerFirstName = Console.ReadLine();
+                        Console.WriteLine("Enter last name");
+                        string customerLastName = Console.ReadLine();
+                        //Save the name as a new customer
+                        Customer loginCheck = new Customer(customerFirstName, customerLastName);
+                        DatabaseAccess activeCustomer = new DatabaseAccess();
+                        CustomerID = activeCustomer.getActiveCustomerID(customerFirstName, customerLastName);
+                        Console.WriteLine(CustomerID);
+
+                        if (CustomerID == 0)
+                        {
+                            Console.WriteLine("That name isn't in our database, please create a new account.");
+                            notActiveCustomer = false;
+                        }
+                        else
+                        {
+                            //check for customer validation
+                            // loginCheck.Login(customerFirstName, customerLastName);
+                            exitLogin = true;
+                        }
+                    }
+                    else if (logCreate == "2")
+                    {
+                        Console.WriteLine("Enter first name to create anew: ");
+                        string newFirstName = Console.ReadLine();
+                        Console.WriteLine("Enter last name to create anew: ");
+                        string newLastName = Console.ReadLine();
+
+                        string newLoginName = newFirstName + newLastName;
+
+                        //Must be worked on for p1 project
+                        //ConnectionString is being lost?
+                        DatabaseAccess newCustID = new DatabaseAccess();
+                        CustomerID = newCustID.getNextCustomerID();
+                        DatabaseAccess newLogin = new DatabaseAccess();
+                        newLogin.addCustomer(CustomerID, newFirstName, newLastName, newLoginName);
+
+                        exitLogin = true;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please type a valid response");
+                        exitLogin = false;
+                    }
+
+                } while (!exitLogin);
+            } while (notActiveCustomer);
                 
-
-                if (logCreate == "1")
-                {
-
-                    Console.WriteLine("Enter first name");
-                    string customerFirstName = Console.ReadLine();
-                    Console.WriteLine("Enter last name");
-                    string customerLastName = Console.ReadLine();
-                    //Save the name as a new customer
-                    Customer loginCheck = new Customer(customerFirstName, customerLastName);
-                    DatabaseAccess activeCustomer = new DatabaseAccess(); 
-                    CustomerID = activeCustomer.getActiveCustomerID(customerFirstName, customerLastName);
-                    Console.WriteLine(CustomerID);
-                    
-                    //check for customer validation
-                   // loginCheck.Login(customerFirstName, customerLastName);
-                    exitLogin = true;
-                }
-                else if (logCreate == "2")
-                {
-                    Console.WriteLine("Enter first name to create anew: ");
-                    string newFirstName = Console.ReadLine();
-                    Console.WriteLine("Enter last name to create anew: ");
-                    string newLastName = Console.ReadLine();
-
-                    string newLoginName = newFirstName + newLastName;
-
-                    //Must be worked on for p1 project
-                    //ConnectionString is being lost?
-                    DatabaseAccess newCustID = new DatabaseAccess();
-                    CustomerID = newCustID.getNextCustomerID();
-                    DatabaseAccess newLogin = new DatabaseAccess();
-                    newLogin.addCustomer(CustomerID, newFirstName, newLastName, newLoginName);
-
-                    exitLogin = true;
-                    
-                }
-                else
-                {
-                    Console.WriteLine("Please type a valid response");
-                    exitLogin = false;
-                }
-
-             } while (!exitLogin);
 
 
             bool exitStoreLocationSelection = false;
@@ -206,11 +218,15 @@ namespace NewP0
                     }
                     else if (nextCartAction == "3")
                     {
+                        DatabaseAccess checkout = new DatabaseAccess();
+                        int StoreNum = storeConfirm;
+                        decimal OrderTotal = (decimal)(itemCount * ItemTotal);
                         //checkout
+                        checkout.getOrder(CartID, StoreNum, CustomerID, OrderTotal);
                     }
                     else if (nextCartAction == "4")
                     {
-                        //
+                        
                     }
                     else if (nextCartAction == "5")
                     {
