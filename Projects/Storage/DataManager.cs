@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Domain;
+using Models;
 
 namespace Storage
 {
     public class DataManager : IDataManager
     {
         public Stores currentStore { get; set; }
+        
+        public Orders currentOrder { get; set; }
      
        // public ShoppingCart CartID { get; set; }
         
@@ -19,18 +22,19 @@ namespace Storage
         
         
         List<CartItems> cartItems;
-        private readonly DatabaseAccess _databaseAccess;
+        private readonly IDatabaseAccess _databaseAccess;
 
 
 
-        public DataManager()
+        public DataManager(IDatabaseAccess dba)
         {
             productID = new CartItems();
             currentStore = new Stores();
            // CartID = new ShoppingCart();
             cart = new List<ShoppingCart>();
             cartItems = new List<CartItems>();
-            this._databaseAccess = new DatabaseAccess();
+            currentOrder = new Orders();
+            this._databaseAccess = dba;
         }
 
         public void getActiveCustomer(string FirstName, string LastName)
@@ -98,6 +102,24 @@ namespace Storage
         public void viewCart()
         {
 
+        }
+
+        public void getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal)
+        {
+            //decimal OrderTotal = 0;
+            List<Orders> order = new List<Orders>();
+            Orders o;
+            int ItemQuantity = 0;
+            ItemQuantity++;
+
+            foreach (Orders orders in order)
+            {
+                o = orders;
+                
+            }
+
+            this._databaseAccess.getOrder(CartID, StoreNum, CustomerID, OrderTotal);
+            //
         }
 
 
