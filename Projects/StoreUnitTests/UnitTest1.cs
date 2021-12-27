@@ -16,7 +16,7 @@ namespace StoreUnitTests
             DatabaseAccess databaseAccess = new DatabaseAccess();
 
 
-            //List<Products> products = databaseAccess.displayProducts1();
+            //List<Products> products = mockDbAccess.displayProducts1();
 
         }
     }

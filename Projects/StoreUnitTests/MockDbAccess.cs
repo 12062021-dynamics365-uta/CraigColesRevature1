@@ -8,9 +8,13 @@ using System.Threading.Tasks;
 
 namespace StoreUnitTests
 {
-    public class MockDbAccess //: IDatabaseAccess
+    public class MockDbAccess
     {
-        public void displayActiveCustomers();
+        public void displayActiveCustomers()
+        {
 
+        }
+
+       
     }
 }

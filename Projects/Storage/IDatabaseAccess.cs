@@ -17,10 +17,21 @@ namespace Storage
         public int newCart(int StoreNum, int CustomerID, decimal CartTotal);
         public void addItemToCart(Guid LineID, int CartID, int ProductID, int ItemQuantity, decimal ItemTotal);
         public void deleteCart(int CartID);
-        public decimal getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal);
 
-        public void getOrderItems(int CartID);
+        public int getOrderIDFromCart(int CartID);
+
+        public decimal calculateCartTotal(int CartID);
+        public void updateCartTotal(int CartID, decimal CartTotal);
+        public void saveOrder(int CartID);
+
+        public void displayOrderTotal(int OrderID);
+
+        public void saveOrderItems(int CartID, int OrderID);
 
         public void viewItemsInCart(int CartID);
+
+        public void viewPastOrders(int CustomerID);
+
+        public void viewPastOrdersPerStore(int CustomerID, int StoreNum);
     }
 }

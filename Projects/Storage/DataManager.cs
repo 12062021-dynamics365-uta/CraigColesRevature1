@@ -34,7 +34,7 @@ namespace Storage
             cart = new List<ShoppingCart>();
             cartItems = new List<CartItems>();
             currentOrder = new Orders();
-            this._databaseAccess = dba;
+            this._databaseAccess = new DatabaseAccess();
         }
 
         public void getActiveCustomer(string FirstName, string LastName)
@@ -104,13 +104,13 @@ namespace Storage
 
         }
 
-        public void getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal)
+        public void getOrder(int CartID, int CustomerID, decimal OrderTotal)
         {
             //decimal OrderTotal = 0;
             List<Orders> order = new List<Orders>();
             Orders o;
             int ItemQuantity = 0;
-            ItemQuantity++;
+            
 
             foreach (Orders orders in order)
             {
@@ -118,8 +118,9 @@ namespace Storage
                 
             }
 
-            this._databaseAccess.getOrder(CartID, StoreNum, CustomerID, OrderTotal);
-            //
+            //this._databaseAccess.getOrder(CartID, CustomerID, OrderTotal);
+            //return OrderTotal = Math.Round(order.Sum(p => p.price), 2);
+            
         }
 
 

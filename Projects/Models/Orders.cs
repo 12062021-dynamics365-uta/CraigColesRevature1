@@ -15,6 +15,16 @@ namespace Models
         public int CustomerID { get; set; }
 
         Decimal OrderTotal { get; set; }
-    
+
+        public List<Orders> orders { get; set; }
+
+        public Orders()
+        {
+            orders = new List<Orders>();
+        }
+
+       
+
+
     }
 }
