@@ -160,7 +160,7 @@ namespace NewP0
             {
                 //Ask user which location
                 Console.WriteLine("Welcome, which location would you like to shop from? \n" +
-                                  "Enter the ");
+                                  "{Enter the Store ID#)");
                 DatabaseAccess storeLocation = new DatabaseAccess();
                 
                 //calls stores from database access to display to the customer
@@ -173,7 +173,7 @@ namespace NewP0
                 convertBool = Int32.TryParse(storeSelect, out convertNumber);
 
                 storeConfirm = Convert.ToInt32(storeSelect);
-                if (convertNumber > 0 && convertNumber <= 3 )
+                if (storeSelect == "1" || storeSelect == "2" || storeSelect == "3")
                 {
                     DatabaseAccess displayProducts1 = new DatabaseAccess();
                     
@@ -187,7 +187,7 @@ namespace NewP0
                     foreach(Products p in dm.currentStore.products)
                     {
                         //prints products from selected store to customer
-                        Console.WriteLine($"ID: {p.productID} \nProduct: {p.proName} \nCost: ${p.price} \nQuantity: {p.ProductQuantity} \n");
+                        Console.WriteLine($"Item ID#: {p.productID} \nProduct: {p.proName} \nCost: ${p.price} \nDescription: {p.ProductDescription} \nQuantity: {p.ProductQuantity} \n");
                     }
                 }
                     
@@ -210,7 +210,7 @@ namespace NewP0
             do
             {
                 //Ask user what item they would like to add to their cart
-                Console.Write("Select an item to add to your cart: (Type the corresponding ID number)");
+                Console.Write("Select an item to add to your cart: (Type the corresponding Item ID number)");
                 int itemSelect = Convert.ToInt32(Console.ReadLine());
                 Console.Write("How many would you like to add? ");
                 int itemQuantity = Convert.ToInt32(Console.ReadLine());
@@ -218,7 +218,7 @@ namespace NewP0
 
 
                 //List<CartItems> cartItems = dm.addItemToCart();
-                if (itemSelect == 0 || itemSelect > 4)
+                if (itemSelect == 0 || itemSelect > 5)
                 {
                     Console.WriteLine("Invalid input.");
                 }
@@ -257,8 +257,8 @@ namespace NewP0
                                        "1.) Add Item \n " +
                                        "2.) View cart \n " +
                                        "3.) Checkout \n " +
-                                       "4.) Delete whole cart \n " + //deleteCartItems
-                                       "5.) Delete an item ");
+                                       "4.) Delete whole cart \n "); //deleteCartItems
+
                     string nextCartAction = (Console.ReadLine().ToString());
 
                     if (nextCartAction == "1")
@@ -310,10 +310,7 @@ namespace NewP0
                         Console.WriteLine("Cart Wipe out!");
                         dbAccess.deleteCart(CartID);  
                     }
-                    else if (nextCartAction == "5")
-                    {
-
-                    }
+                  
                     else
                     {
                         Console.WriteLine("Invalid option. Try again");
