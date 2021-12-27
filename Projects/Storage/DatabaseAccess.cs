@@ -12,7 +12,7 @@ namespace Storage
     public class DatabaseAccess : IDatabaseAccess
     {
         string database = "Data source = DESKTOP-58I9UJJ\\SQLEXPRESS; initial Catalog = ProjectP0; integrated security = true";
-        public SqlConnection connect;
+        public readonly SqlConnection connect;
         public readonly IMapper _mapper;
 
         public DatabaseAccess()
@@ -20,6 +20,7 @@ namespace Storage
             this.connect = new SqlConnection(this.database);
             connect.Open();
             this._mapper = new Mapper();
+            
         }
 
       
@@ -28,8 +29,8 @@ namespace Storage
         {
             string query = "SELECT LoginName FROM Customers;";
 
-            using (connect)
-            {
+            //using (connect)
+            //{
                 //Opening the SqlConnection
                 //connect.Open();
                         //Creating SQL command to then read and display to active customers to the current user              
@@ -45,11 +46,12 @@ namespace Storage
                             }
                             Console.WriteLine();
                         }
+                        dataRead.Close();
                     }
 
                 }
 
-            }
+            //}
         }
 
         public int getActiveCustomerID(string FirstName, string LastName)
@@ -86,8 +88,8 @@ namespace Storage
             string query = "SELECT MAX(CustomerID) + 1 as MaxID FROM Customers;";
             //command.ExecuteNonQuery();
 
-            using (connect)
-            {
+            //using (connect)
+            //{
                 //connect.Open();
                 using (SqlCommand command = new SqlCommand(query, connect))
                 {
@@ -110,7 +112,7 @@ namespace Storage
                 }
                 
 
-            }
+           // }
             return CustomerID;
         }
        
@@ -133,8 +135,8 @@ namespace Storage
                 string query = "INSERT INTO Customers(CustomerID, FirstName, LastName, LoginName) values('" + CustomerID + "', '" + FirstName + "', '" + LastName + "', '" + LoginName + "');";
                 //command.ExecuteNonQuery();
 
-                using (connect)
-                {
+                //using (connect)
+               // {
                     //connect.Open();
                     using (command = new SqlCommand(query, connect))
                     {
@@ -149,11 +151,12 @@ namespace Storage
                                 }
                                 Console.WriteLine();
                             }
+                            dataRead.Close();
                         }
 
                     }
 
-                }
+                //}
             }
             else
             {
@@ -169,29 +172,30 @@ namespace Storage
         {
           string query = "SELECT StoreNum, StoreLocation FROM Stores;";
 
-                using (connect)
-                {
+                //using (connect)
+                //{
                    // connect.Open();
                     using (SqlCommand command = new SqlCommand(query, connect))
                     {
                         using (SqlDataReader dataRead = command.ExecuteReader())
                         {
+                            Console.WriteLine("\n ID# " + " Store Location ");
                             while (dataRead.Read())
                             {
                                 for (int i = 0; i < dataRead.FieldCount; i++)
                                 {
-                                    Console.WriteLine(dataRead.GetValue(i));
+                                    Console.Write("   " + (dataRead.GetValue(i)));
                                 }
                                 Console.WriteLine();
                             }
+                        dataRead.Close();
                         }
 
                     }
                 
-                }
+                //}
 
         }
-
         public List<Products> displayProducts1(int StoreNum)
         {
             int productCount = 1;
@@ -295,10 +299,23 @@ namespace Storage
         }
 
 
+        //delete foreign keys before primary deleteCart
+        public void deleteCartItems(int CartID)
+        {
+            string query = "DELETE ShoppingCartItems WHERE CartID = " + CartID + " ;";
+
+            using (SqlCommand command = new SqlCommand(query, this.connect))
+            {
+                SqlDataReader dataReader = command.ExecuteReader();
+
+                dataReader.Close();
+            }
+        }
 
         public void deleteCart(int CartID)
         {
-            string query = "DELETE ShoppingCart WHERE CartID = " + CartID + " ;";
+            
+            string query = "DELETE ShoppingCart WHERE CartID = " + CartID + ";";
             
             using (SqlCommand command = new SqlCommand(query, this.connect))
             {
@@ -310,10 +327,105 @@ namespace Storage
 
 
 
-        public decimal getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal)
+        public void saveOrder(int CartID)
         {
-            string query = $"INSERT INTO Orders (CartID, StoreNum, CustomerID, OrderTotal) values('{CartID}','{StoreNum}', '{CustomerID}', '{OrderTotal}');";
-            List<Orders> order = new List<Orders>();
+            string query = $"INSERT INTO Orders (CartID, StoreNum, CustomerID, OrderTotal) " +
+                            "SELECT CartID, StoreNum, CustomerID, CartTotal FROM ShoppingCart WHERE CartID = " + CartID + ";";
+            
+            SqlCommand command = new SqlCommand(query, this.connect);
+            
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.WriteLine(dataReader.GetValue(i));
+                };
+
+            }
+            dataReader.Close();
+           
+        }
+
+            
+            
+                
+        public int getOrderIDFromCart(int CartID)
+        {
+            string query = "SELECT OrderID FROM Orders WHERE CartID = " + CartID + ";";
+            int OrderID = 0;
+            SqlCommand command = new SqlCommand(query, this.connect);
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+               // for (int i = 0; i < dataReader.FieldCount; i++)
+                //{
+                    OrderID = (Convert.ToInt32(dataReader[0].ToString()));
+                //};
+
+            }
+            dataReader.Close();
+            return OrderID;
+        } 
+        
+        public decimal calculateCartTotal(int CartID)
+        {
+            decimal CartTotal = 0;
+            string query = $"SELECT SUM(ItemTotal) FROM ShoppingCartItems WHERE CartID = '{CartID}';";
+            SqlCommand command = new SqlCommand(query, this.connect);
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                   CartTotal = Convert.ToDecimal(dataReader[0].ToString());
+
+                };
+
+            }
+            dataReader.Close();
+            return CartTotal;
+            
+        }
+
+        public void updateCartTotal(int CartID, decimal CartTotal)
+        {
+            string query = $"UPDATE ShoppingCart SET CartTotal = '{CartTotal}' WHERE CartID = '{CartID}';";
+            SqlCommand command = new SqlCommand(query, this.connect);
+            SqlDataReader dataReader = command.ExecuteReader();
+            dataReader.Close();
+
+        }
+
+
+
+
+
+        public void displayOrderTotal(int OrderID)
+        {
+            string query = $"SELECT SUM(OrderTotal) FROM Orders WHERE OrderID = '{OrderID}';";
+            SqlCommand command = new SqlCommand(query, this.connect);
+            SqlDataReader dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.WriteLine("Your total is: " + dataReader.GetValue(i));
+                    
+                };
+
+            }
+            dataReader.Close();
+        }
+            
+
+
+        public void saveOrderItems(int CartID, int OrderID)
+        {
+            
+            string query = "INSERT INTO OrderItems (LineID, OrderID, ProductID, ItemQuantity, ItemTotal) " +
+                            "SELECT LineID, " + OrderID + ", ProductID, ItemQuantity, ItemTotal FROM ShoppingCartItems WHERE CartID = " + CartID + ";";
+            
             SqlCommand command = new SqlCommand(query, this.connect);
             //{
             SqlDataReader dataReader = command.ExecuteReader();
@@ -325,23 +437,12 @@ namespace Storage
                 };
 
             }
-
-            string query1 = "SELECT StoreNum, CustomerID, OrderTotal FROM ShoppingCart WHERE CartID = " + CartID + ";";
-            using (command = new SqlCommand(query, this.connect))
-            {
-                dataReader = command.ExecuteReader();
-                
-                dataReader.Close();
-            }
-            return OrderTotal;
+            dataReader.Close();
         }
 
 
-        public void getOrderItems(int CartID)
-        {
-            //INSERT INTO OrderItems (LineID, OrderID, ProductID, ItemQuantity, ItemTotal)
-            //SELECT LineID, OrderID, ProductID, ItemQuantity, ItemTotal FROM ShoppingCartItems WHERE CartID = " + CartID + "
-        }
+        
+
 
 
         public void changeQuantityInCart(int CartItemID, int ItemQuantity, float ItemTotal)
@@ -350,12 +451,22 @@ namespace Storage
                 " WHERE CartItemID = " + CartItemID + " ;";
         }
 
-        //delete foreign keys before primary deleteCart
-        public void deleteCartItems(int CartID)
-        {
-            string query = "DELETE ShoppingCartItems WHERE CartID = " + CartID + " ;";
-        }
+        
+        
+        
+        
+        
+        
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
         public void viewCart(int CartID)
         {
 
@@ -365,14 +476,14 @@ namespace Storage
                            "ON Stores.StoreNum = ShoppingCart.StoreNum " +
                            "LEFT OUTER JOIN Customers " +
                            "ON Customers.CustomerID = ShoppingCart.CustomerID " +
-                           "WHERE CartID = " + CartID + " ;";
+                           "WHERE CartID = " + CartID + ";";
 
 
         }
 
         public void viewItemsInCart(int CartID)
         {
-            string query = "SELECT LineID, ProductName, ItemQuantity, ItemTotal " +
+            string query = "SELECT '\n LineID: ', LineID, '\n Product: ', ProductName, '\n Quantity: ', ItemQuantity, '\n Item total: ', ItemTotal, '\n'" +
                            "FROM ShoppingCartItems " +
                            "LEFT OUTER JOIN Products " +
                            "ON Products.ProductID = ShoppingCartItems.ProductID " +
@@ -387,11 +498,78 @@ namespace Storage
             {
                 for (int i = 0; i < dataReader.FieldCount; i++)
                 {
-                    Console.WriteLine(dataReader.GetValue(i));
+                    Console.Write(dataReader.GetValue(i));
                 };
 
             }
+            dataReader.Close();
         }
+
+        public void viewPastOrdersPerStore(int CustomerID, int StoreNum)
+        {
+
+            SqlConnection c = new SqlConnection(this.database);
+            c.Open();
+             string query = "SELECT Orders.OrderID, '\n', ProductName, '--------', 'Quantity: ', ItemQuantity, '\n Price: $', ItemTotal " +
+                           "FROM Orders " +
+                           "INNER JOIN OrderItems " +
+                           "ON OrderItems.OrderID = Orders.OrderID " +
+                           "LEFT OUTER JOIN Products " +
+                           "ON Products.ProductID = OrderItems.ProductID " +
+                           "WHERE CustomerID = " + CustomerID + " AND StoreNum = " + StoreNum +
+                           "ORDER BY OrderID, ProductName;";
+            
+                SqlCommand command = new SqlCommand(query, c);
+           
+
+                SqlDataReader dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    Console.Write("\nOrder# : ");
+                    for (int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        Console.Write(dataReader.GetValue(i));
+                    };
+                    Console.WriteLine();
+
+                }
+                dataReader.Close();
+            
+        }
+
+        public void viewPastOrders(int CustomerID)
+        {
+            string query = "SELECT Orders.OrderID, '\n', ProductName, '--------', 'Quantity: ', ItemQuantity, '\n Price: $', ItemTotal " +
+                           "FROM Orders " +
+                           "INNER JOIN OrderItems " +
+                           "ON OrderItems.OrderID = Orders.OrderID " +
+                           "LEFT OUTER JOIN Products " +
+                           "ON Products.ProductID = OrderItems.ProductID " +
+                           "WHERE CustomerID = " + CustomerID + 
+                           "ORDER BY Orders.OrderID, ProductName;";
+           
+            SqlCommand command = new SqlCommand(query, this.connect);
+
+            SqlDataReader dataReader = command.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                Console.Write("\nOrder# : ");
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    Console.Write(dataReader.GetValue(i));
+                };
+                Console.WriteLine();
+
+            }
+            dataReader.Close();
+        }
+
+        
+
+           
+
+
 
 
     }

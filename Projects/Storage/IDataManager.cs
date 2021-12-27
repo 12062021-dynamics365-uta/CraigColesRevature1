@@ -13,7 +13,7 @@ namespace Storage
         public void getActiveCustomer(string FirstName, string LastName);
         int addCart(int StoreID, int CustomerID);
         List<CartItems> addItemToCart(int CartID, int productID, int ItemQuantity);
-        public void getOrder(int CartID, int StoreNum, int CustomerID, decimal OrderTotal);
+        public void getOrder(int CartID, int CustomerID, decimal OrderTotal);
 
 
 

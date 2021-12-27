@@ -27,7 +27,7 @@ namespace NewP0
 
             //Welcome Customer
 
-            Console.Write("Hello, Customer!");
+            Console.Write("Hello, Customer! Welcome to Guitar Center Central! Take a moment to log in, will ya? \n");
 
 
             //Login
@@ -38,19 +38,19 @@ namespace NewP0
             {
                 do
                 {
-                    Console.WriteLine("Are you any of these individuals? If so Login");
+                    Console.WriteLine("Are you any of these rockin' customers? If so Login \n");
                     DatabaseAccess displayCurrentCustomers = new DatabaseAccess();
                     displayCurrentCustomers.displayActiveCustomers();
-                    Console.WriteLine("Login or Create? (Type 1 to login, 2 to create)");
+                    Console.WriteLine("Login or Create? (Type 1 to login, 2 to create) \n");
                     string logCreate = Console.ReadLine();
 
 
                     if (logCreate == "1")
                     {
 
-                        Console.WriteLine("Enter first name");
+                        Console.Write("Enter first name: ");
                         string customerFirstName = Console.ReadLine();
-                        Console.WriteLine("Enter last name");
+                        Console.Write("Enter last name: ");
                         string customerLastName = Console.ReadLine();
                         //Save the name as a new customer
                         Customer loginCheck = new Customer(customerFirstName, customerLastName);
@@ -97,7 +97,61 @@ namespace NewP0
 
                 } while (!exitLogin);
             } while (notActiveCustomer);
-                
+
+            bool firstMenu = true;
+            while (firstMenu) 
+            {
+                Console.WriteLine("\n What would you like to do next? \n " +
+                                  "1.) Start shopping! \n " +
+                                  "2.) View orders per store \n " +
+                                  "3.) View all past orders \n ");
+                string customerStart = (Console.ReadLine().ToString());
+
+                if (customerStart == "1")
+                {
+                    break;
+
+                }
+                else if (customerStart == "2")
+                {
+                    
+                    Console.WriteLine("Pick a location to look up past orders: " +
+                                       "(Enter the store ID#)");
+                    dbAccess.getStores();
+                    //customer's choice of store to view past orders
+                    string CustomerStorePastOrders = (Console.ReadLine().ToString());
+                   
+                    if (CustomerStorePastOrders == "1") 
+                    {
+                        
+                        //past orders of store location 1.
+                        dbAccess.viewPastOrdersPerStore(CustomerID, 1);
+                    }
+                    else if (CustomerStorePastOrders == "2")
+                    {
+                        
+                        //past orders of store location 2.
+                        dbAccess.viewPastOrdersPerStore(CustomerID, 2);
+                    }
+                    else if (CustomerStorePastOrders == "3")
+                    {
+                        
+                        //past orders of store location 3.
+                        dbAccess.viewPastOrdersPerStore(CustomerID, 3);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter a valid StoreID number,");
+                    }
+
+                }
+                else if (customerStart == "3")
+                {
+                    dbAccess.viewPastOrders(CustomerID); 
+                }
+            } 
+
+
 
 
             bool exitStoreLocationSelection = false;
@@ -105,7 +159,8 @@ namespace NewP0
             do
             {
                 //Ask user which location
-                Console.WriteLine("Welcome, which location would you like to shop from?\n");
+                Console.WriteLine("Welcome, which location would you like to shop from? \n" +
+                                  "Enter the ");
                 DatabaseAccess storeLocation = new DatabaseAccess();
                 
                 //calls stores from database access to display to the customer
@@ -118,21 +173,21 @@ namespace NewP0
                 convertBool = Int32.TryParse(storeSelect, out convertNumber);
 
                 storeConfirm = Convert.ToInt32(storeSelect);
-                if (convertNumber > 0)
+                if (convertNumber > 0 && convertNumber <= 3 )
                 {
                     DatabaseAccess displayProducts1 = new DatabaseAccess();
                     
                     //The currentstore from datamanager being set as the customer's input 
                     
                     dm.currentStore.StoreNum = convertNumber;
-                    Console.WriteLine("A new cart has been created for you");
+                    Console.WriteLine("A new cart has been created for you \n");
                     //Loads products from DataManager
                     dm.LoadProducts();
                     
                     foreach(Products p in dm.currentStore.products)
                     {
                         //prints products from selected store to customer
-                        Console.WriteLine($"{p.productID} \n {p.proName} \n {p.price} \n {p.ProductQuantity}");
+                        Console.WriteLine($"ID: {p.productID} \nProduct: {p.proName} \nCost: ${p.price} \nQuantity: {p.ProductQuantity} \n");
                     }
                 }
                     
@@ -155,7 +210,7 @@ namespace NewP0
             do
             {
                 //Ask user what item they would like to add to their cart
-                Console.Write("Select items to add to your cart: (Type the corresponding numeric value)");
+                Console.Write("Select an item to add to your cart: (Type the corresponding ID number)");
                 int itemSelect = Convert.ToInt32(Console.ReadLine());
                 Console.Write("How many would you like to add? ");
                 int itemQuantity = Convert.ToInt32(Console.ReadLine());
@@ -163,7 +218,13 @@ namespace NewP0
 
 
                 //List<CartItems> cartItems = dm.addItemToCart();
+                if (itemSelect == 0 || itemSelect > 4)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
 
+
+                
 
 
                 //ShoppingCart.addItemToCart(cartItemID, LineID, CartID, ProductID, ItemQuantity, ItemTotal);
@@ -179,15 +240,13 @@ namespace NewP0
                         {
                             //adds item to cart  //passing productID
                             List<CartItems> cartItems = dm.addItemToCart(CartID, itemSelect, itemQuantity);
-                            itemCount++;
+                            
+                            
+
                         }
                     }
                 }
 
-                if (itemCount == 0)
-                {
-                    Console.WriteLine("Invalid input.");
-                }
                 
 
             bool mainMenu = true;
@@ -206,6 +265,15 @@ namespace NewP0
                     {
                         addMoreToCart = false;
                         mainMenu = false;
+                        dm.LoadProducts();
+
+                        foreach (Products p in dm.currentStore.products)
+                        {
+                            //prints products from selected store to customer
+                            Console.WriteLine($"ID: {p.productID} \nProduct: {p.proName} \nCost: ${p.price} \nQuantity: {p.ProductQuantity} \n \n ");
+                        }
+                        Console.WriteLine("Your cart's total: " + dbAccess.calculateCartTotal(CartID) + "\n ");
+
                         //break;
 
                     }
@@ -214,19 +282,33 @@ namespace NewP0
 
                         DatabaseAccess viewItems = new DatabaseAccess();
                         viewItems.viewItemsInCart(CartID);
+                        Console.WriteLine("\n \nYour cart's total: " + dbAccess.calculateCartTotal(CartID) + "\n ");
 
                     }
                     else if (nextCartAction == "3")
                     {
                         DatabaseAccess checkout = new DatabaseAccess();
-                        int StoreNum = storeConfirm;
-                        decimal OrderTotal = (decimal)(itemCount * ItemTotal);
-                        //checkout
-                        checkout.getOrder(CartID, StoreNum, CustomerID, OrderTotal);
+                        //Calculates the cart total
+                        decimal CartTotal = checkout.calculateCartTotal(CartID);
+                        Console.WriteLine(CartTotal);
+                        checkout.updateCartTotal(CartID, CartTotal);
+                        //Will save the customer's order
+                        checkout.saveOrder(CartID);
+                        //Gets the new OrderID 
+                        int OrderID = checkout.getOrderIDFromCart(CartID);
+                        //Save's the customers ordered items
+                        checkout.saveOrderItems(CartID, OrderID);
+                        Console.WriteLine($"Order: {OrderID} has been successfully placed. \n ");
+                        checkout.displayOrderTotal(OrderID);
+                        mainMenu = false;
+                        addMoreToCart = true;
+                        
                     }
                     else if (nextCartAction == "4")
                     {
-                        
+                        dbAccess.deleteCartItems(CartID);
+                        Console.WriteLine("Cart Wipe out!");
+                        dbAccess.deleteCart(CartID);  
                     }
                     else if (nextCartAction == "5")
                     {
@@ -241,6 +323,14 @@ namespace NewP0
                 while (mainMenu);
 
             } while (!  addMoreToCart);
+
+                        
+
+                        
+                        
+                        
+                        
+                        
 
 
 

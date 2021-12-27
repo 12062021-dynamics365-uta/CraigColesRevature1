@@ -15,12 +15,15 @@ namespace Domain
         public int StoreID { get; set; }
         public int CustomerID {get; set;}
         public decimal CartTotal { get; set; }
-        
+
+        public List<Products> shoppingcart = new List<Products>();
 
         public ShoppingCart()
         {
            
         }
+
+       
 
 
         
