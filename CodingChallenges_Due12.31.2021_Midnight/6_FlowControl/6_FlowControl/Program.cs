@@ -4,7 +4,8 @@ namespace _6_FlowControl
 {
     public class Program
     {
-        //private username; 
+        private static string username;
+        private static string pass;
         
         static void Main(string[] args)
         {
@@ -108,6 +109,7 @@ namespace _6_FlowControl
             string username = Console.ReadLine();
             Console.WriteLine("Enter password: ");
             string pass = Console.ReadLine();
+            Console.WriteLine($"saved New Username: {username} New Pass: {pass}");
         }
 
         /// <summary>
@@ -120,7 +122,20 @@ namespace _6_FlowControl
         /// <returns></returns>
         public static bool Login()
         {
-            throw new NotImplementedException($"Login() has not been implemented.");
+            Program.Register();
+            bool correctLogin = false;
+            string usernameCheck = Console.ReadLine();
+            string passCheck = Console.ReadLine();
+            if(usernameCheck == username && passCheck == pass)
+            {
+                correctLogin = true;
+            }
+            else
+            {
+                correctLogin = false;
+            }
+            return correctLogin;
+
         }
 
         /// <summary>
@@ -133,7 +148,15 @@ namespace _6_FlowControl
         /// <param name="temp"></param>
         public static void GetTemperatureTernary(int temp)
         {
-            throw new NotImplementedException($"GetTemperatureTernary() has not been implemented.");
+            var result = temp <= 42 ? $"{temp} is too cold!":
+            //checks if int temp is between 43 and 78 and will display "is an okay temperature"
+            temp >= 43 && temp <= 78 ? $"{temp} ok temperature":
+            //checks if int temp is above 78 and will display "too hot!"
+            temp > 78 ? $"{temp} is too hot!" :
+            //show no result as a last case
+            "no result";
+            Console.WriteLine(result);
+
         }
     }//EoP
 }//EoN

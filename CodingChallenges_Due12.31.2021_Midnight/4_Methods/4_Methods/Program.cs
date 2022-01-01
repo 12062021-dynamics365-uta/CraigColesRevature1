@@ -108,7 +108,7 @@ namespace _4_MethodsChallenge
 
         public static double DoAction(double x, double y, int action)
         {
-            double result = 0;
+            double result;
             switch (action)
             {
                 case 1:
@@ -116,7 +116,7 @@ namespace _4_MethodsChallenge
                     break;
 
                 case 2:
-                    result = x - y;
+                    result = y - x;
                     break;
                 
                 case 3:
@@ -124,22 +124,19 @@ namespace _4_MethodsChallenge
                     break;
                
                 case 4:
-                    try
-                    {
-                        result = x / y;
-                    }
-                    catch (DivideByZeroException z)
-                    {
-                        Console.WriteLine("Can't divide by zero!");
-                    }
+                    result = x / y;
                     break;
-
+                    
                 default:
-                    Console.WriteLine("Invalid input.");
-                    break;
-                
+                    throw new FormatException("typeof(System.FormatException");
             }
             return result;
+                    
+                
+                    
+                   
+                    
+
 
         }
     }

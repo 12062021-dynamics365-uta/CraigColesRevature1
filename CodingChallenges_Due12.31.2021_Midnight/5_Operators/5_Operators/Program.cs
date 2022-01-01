@@ -171,11 +171,11 @@ namespace _5_OperatorsChallenge
             {
                 return true;
             }
-          
            else
             {
                 return false;
             }
+          
         }
     }
 }
