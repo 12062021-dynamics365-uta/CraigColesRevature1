@@ -19,16 +19,31 @@ namespace _3_DataTypeAndVariablesChallenge
             UInt32 uInt = 0;
             Int64 intSixFour = 9223372036854775807;
             UInt64 uIntSix4 = 0;
-            Single f;
+            float myFloat = -31.1289f;
             double d = 3.23291494;
             char c = 'c';
             bool b1 = false;
             object obj1 = 2;
             string str = "Hello";
-            decimal dec;
+            decimal dec = 3.001002003m;
+            Console.WriteLine(b);
+            Console.WriteLine(sb);
+            Console.WriteLine(iThirTwo);
+            Console.WriteLine(uInt);
+            Console.WriteLine(intSixFour);
+            Console.WriteLine(uIntSix4);
+            Console.WriteLine(myFloat);
+            Console.WriteLine(d);
+            Console.WriteLine(c);
+            Console.WriteLine(b1);
+            Console.WriteLine(obj1);
+            Console.WriteLine(str);
+            Console.WriteLine(dec);
 
-            object obj = " ";
-            Program.PrintValues(obj);
+
+            string s1 = "I control text";
+            int numString = 28;
+           
         }
 
         /// <summary>
@@ -95,9 +110,9 @@ namespace _3_DataTypeAndVariablesChallenge
         public static int? StringToInt(string numString)
         {
             //throw new NotImplementedException($"StringToInt() has not been implemented");
-            string s1 = "I control text";
-            numString = "28";
-            bool success = Int32.TryParse(numString, out int x);
+
+            int x;
+            bool success = Int32.TryParse(numString, out x);
 
             if (success)
             {
@@ -105,7 +120,7 @@ namespace _3_DataTypeAndVariablesChallenge
             }
             else
             {
-                Console.WriteLine("Input string is invalid.");
+                return null;
             }
             return x;
 

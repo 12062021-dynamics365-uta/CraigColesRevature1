@@ -7,13 +7,51 @@ namespace _7_GuessingGameChallenge
     {
         public static void Main(string[] args)
         {
+            List<int> guessNums = new List<int>();
             int randomNum = Program.GetRandomNumber();
-            
-            
-            int guess = Program.GetUsersGuess();
-           
-            Program.CompareNums(randomNum, guess);
-            Program.PlayGameAgain();
+            bool restart = false;
+            int turns = 0;
+            do {
+                do
+                {
+                    
+                    int userGuess = GetUsersGuess();
+                    int round = CompareNums(randomNum, userGuess);
+                    guessNums.Add(userGuess);
+
+                    if (round == -1)
+                    {
+                        Console.WriteLine("Too high. Try again.");
+                        turns++;
+                    }
+                    else if (round == 1)
+                    {
+                        Console.WriteLine("Too low.");
+                        turns++;
+                    }
+                    else if (round == 0)
+                    {
+                        Console.WriteLine("win!");
+                        turns = -1;
+                    }
+                } while (turns > 5 && turns != 0);
+
+                if (turns == 5)
+                {
+                    Console.WriteLine("You ran out of guess!");
+                }
+                else if (turns == -1)
+                {
+                    Console.WriteLine("You win!");
+                }
+
+                 restart = PlayGameAgain();
+
+            } while (restart == true);
+
+    
+            //ran out of time to get the flow right. 
+              
         }
 
         /// <summary>
@@ -23,6 +61,7 @@ namespace _7_GuessingGameChallenge
         public static int GetRandomNumber()
         {
             Random randomGen = new Random();
+            //create a variable for a random number between 1 and 100
             int randomNum = randomGen.Next(1, 100);
             Console.WriteLine(randomNum);
             return randomNum;
@@ -37,14 +76,15 @@ namespace _7_GuessingGameChallenge
         public static int GetUsersGuess()
         {
 
-            //parsing the player's guess to an interger(inputInt)
             int playerGuess = 0;
             try
             {
             Console.WriteLine("Guess a number between 1 and 100: ");
+            //parsing the player's guess to an interger(inputInt)
             playerGuess = Convert.ToInt32(Console.ReadLine());
                 
             }
+            //Exception handled incase user enters something other than an int.
             catch(Exception e)
             {
                 Console.WriteLine("Invalid input!");
@@ -68,29 +108,29 @@ namespace _7_GuessingGameChallenge
         {
             
             bool rightGuess = false;
-            do
-            {
+            //do
+            //{
                 if (randomNum < guess)
                 {
-                    Console.WriteLine("Guess lower.");
-                    rightGuess = false;
+                    
+                    
                     return -1;
                 }
                 else if (randomNum == guess)
                 {
-                    Console.WriteLine("Your guess was correct!");
-                    rightGuess = true;
+                    
+                    
                     return 0;
 
                 }
                 else if (randomNum > guess)
                 {
-                    Console.WriteLine("Guess higher.");
-                    rightGuess = false;
+                    
+                    
                     return 1;
                 }
-            }
-            while (rightGuess == false); 
+            //}
+            //while (rightGuess == true); 
             return guess;
 
             
@@ -109,14 +149,18 @@ namespace _7_GuessingGameChallenge
            
                 Console.WriteLine("Would you like to play again?");
                 string userChoice = Console.ReadLine();
-                if (userChoice == "yes")
+                if (userChoice == "y")
                 {
                     
                     endGame = false;
                 }
-                else
+                else if (userChoice == "n")
                 {
                     endGame = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input.");
                 }
             
            return endGame;

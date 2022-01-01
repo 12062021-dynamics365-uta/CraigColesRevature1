@@ -39,8 +39,10 @@ namespace _11_ArraysAndListsChallenge
         {
             for (int i = 0; i < x.Length; i++)
             {
-                 int[i] = x + 2;
+                //adds two to each element in the array.
+                x[i] += 2;
             }
+            return x;
         }
 
         /// <summary>
@@ -52,7 +54,20 @@ namespace _11_ArraysAndListsChallenge
         /// <returns></returns>
         public static decimal ArrayListAvg(ArrayList myArrayList)
         {
-            throw new NotImplementedException("ArrayListAvg has not been implemented yet.");
+            decimal returnDec = 0;
+            int counter = 0;
+            for (int i = 0; i < myArrayList.Count; i++){
+                
+                if(myArrayList[i].GetType() != typeof(string))// if type is not a string,
+                {
+                    //only returns the ints and doubles, converts them to decimal
+                    returnDec += Convert.ToDecimal(myArrayList[i]);
+                    //counts numbers and adds one per loop
+                    counter++;
+                }
+            }
+
+            return Math.Round(returnDec / counter, 3);//In a Math.Round method rounds to the 3rd decimal place
         }
 
         /// <summary>
@@ -62,7 +77,17 @@ namespace _11_ArraysAndListsChallenge
         /// <param name="myArray1"></param>
         public static int ListAscendingOrder(List<int> scores, int yourScore)
         {
-            throw new NotImplementedException("ListAscendingOrder has not been implemented yet.");
+            int rank = 0;
+            //adds the int yourScoure to the list of coures.
+            scores.Add(yourScore);
+            //sorts the list of scores.
+            scores.Sort();
+            //
+            rank = scores.IndexOf(yourScore);
+
+            return ++rank;
+
+
         }
 
         /// <summary>
@@ -74,7 +99,16 @@ namespace _11_ArraysAndListsChallenge
         /// <returns></returns>
         public static bool FindStringInList(List<string> myArray2, string word)
         {
-            throw new NotImplementedException("FindStringInList has not been implemented yet.");
+            
+            if (myArray2.Contains(word))
+            {
+                //returns true if the list of string contains the string word value
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }//EoP
 }// EoN

@@ -20,14 +20,12 @@ namespace _9_ClassesChallenge
         }
 
 
-        Human noArgs = new Human();
-        Human Args = new Human("Pat", "Smyth");
+        
 
         public void AboutMe()
         {
             Console.WriteLine($"My name is {firstName} {lastName}");
-            noArgs.AboutMe();
-            Args.AboutMe();
+            
             
         }
         
