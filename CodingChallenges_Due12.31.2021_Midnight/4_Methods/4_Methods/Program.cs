@@ -11,9 +11,14 @@ namespace _4_MethodsChallenge
             **/
            
             Console.WriteLine(Program.GetName());
-            string friendName = "Emi";
+            string friendName = "Emily";
             Console.WriteLine(Program.GreetFriend(friendName));
             Console.WriteLine(Program.GetNumber());
+            Console.WriteLine(Program.GetAction());
+            double x = 0;
+            double y = 0;
+            int action = 0;
+            Console.WriteLine(Program.DoAction(x, y, action));
         }
 
         public static string GetName()
