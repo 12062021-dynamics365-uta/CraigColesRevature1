@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        body{
+    background-color:rosybrown
+}
+
+.title{
+    
+    width: 50%;
+    text-align: center;
+    align-self: center;
+    font-size: 40pt;
+    font-weight:bolder;
+    padding: 5px;
+    margin:1cm;  
+}
+
+.center {
+    background-color: lightgreen;
+    width: 50%;
+    text-align: center;
+    
+    font-size: 14pt;
+    padding: 5px;
+    margin:1cm;
+    
+}
+
+.mainButton {
+    background-color: #000000;
+        color: #FFFFFF;
+        text-align: center;
+        margin-left: 180px;
+        width: 400px;
+        height: 40px;
+        -webkit-border-radius: 40px;
+        font-size: 20px;
+        
+}
+
+.button{
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 5px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    margin-left:-90px;
+    height: 30px;
+    width: 100px;
+}
+
+.restartbutton{
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 5px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px; 
+    margin-left: 300px;
+    position: relative; bottom: 180px;
+    width: 200px;
+    height: 100px;
+    font-size: 20pt;
+}
+
+.alerts{
+    color: red;
+
+}
+
+.enterScreens{
+    
+    font-size: 14pt;
+    height: 30px;
+    margin: 100px;
+}
+
+.enterText{
+    width: clamp(200px, 50% + 20px, 800px);
+    text-align: center;
+    margin-left: -130px;
+    font-size: 40pt;
+}
+
+.results{
+    color:rgb(4, 10, 65);
+    text-align: left;
+    font-size: 24pt;
+    font-weight: bold;
+
+}
+
+h3{
+    width: clamp(200px, 50% + 20px, 800px);
+    font-size: 20pt;    
+}
+
+span{
+
+    background-color: green;
+    color: white;
+    font-size: 12pt;
+    
+
+}
+
+p {
+    height: 10%;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <script>
+    let intro = document.createElement('p');
+document.body.appendChild(intro);
+intro.className = `title`;
+intro.innerText = 'Welcome to SweetNSalty!';
+
+let userInstructions = document.createElement('p');
+document.body.appendChild(userInstructions);
+userInstructions.className = 'center';
+userInstructions.innerHTML = ("You will be required to choose a starting number and an ending number. <br>" +
+                              "The range between the two numbers will be displayed to you.<br>" +
+                              "Numbers that are multiples of 3 with display 'sweet'.<br>" +
+                              "Numbers that are multiples of 5 with display 'salty'.<br>" + 
+                              "Numbers that are multiples of both will display 'SweetNSalty'.<br>" +
+                              "Avoid using negative numbers, keep the range more than 200 apart and no larger than 10,000 apart,<br>" +
+                              "and the starting number should be lower than the ending number.<br>" +
+                              "Click the 'Start' button to begin!.");
+
+let alertMessage = document.createElement('h5');
+document.body.appendChild(alertMessage);
+
+let startButtton = document.createElement('button');
+startButtton.className = 'mainButton';
+document.body.appendChild(startButtton);
+startButtton.innerText = 'Start!';
+
+
+
+
+//input first number screen
+let firstNumText = document.createElement('h3');
+firstNumText.className = 'enterText';
+let inputFirstNum = document.createElement('input');
+inputFirstNum.className = 'enterScreens';
+let submitFirstNum = document.createElement('button');
+submitFirstNum.className = 'button';
+let firstNum = 0;
+
+//input ending number screen
+
+let finalNumText = document.createElement('h3');
+finalNumText.className = 'enterText';
+let inputLastNum = document.createElement('input');
+inputLastNum.className = 'enterScreens';
+let submitLastNum = document.createElement('button');
+submitLastNum.className = 'button';
+let finalNum = 0;
+
+let finalSweetText = document.createElement('p');
+let finalSaltyText = document.createElement('p');
+let finalSweetnSaltyText = document.createElement('p');
+
+
+
+let restartButton = document.createElement('button');
+restartButton.innerText = 'Restart!';
+restartButton.className = 'restartbutton';
+
+startButtton.addEventListener('click', () =>{
+    
+    document.body.innerHTML = '';
+    document.body.appendChild(firstNumText);
+    firstNumText.innerText = 'Enter first #';
+    firstNumText.className = 'enterText';
+    document.body.appendChild(inputFirstNum);
+    
+    //create the submit element
+    document.body.appendChild(submitFirstNum);
+    submitFirstNum.innerText = 'Enter!';
+    
+    
+});
+
+
+submitFirstNum.addEventListener('click', () => {   
+    
+    
+    document.body.innerHTML = '';
+    inputFirstNum.focus();
+    firstNum = inputFirstNum.value;
+    console.log(firstNum);
+    inputFirstNum.value = "";
+
+    
+    
+    document.body.appendChild(finalNumText);
+    finalNumText.innerText = 'Enter final #';
+    finalNumText.className = 'enterText';
+    document.body.appendChild(inputLastNum);
+    
+    document.body.appendChild(submitLastNum);
+    submitLastNum.innerText = 'Enter!';
+    
+    
+    
+    
+});
+
+//creating ordered list element for the numbers
+//let numberList = document. createElement('ol');
+
+
+submitLastNum.addEventListener('click', () =>{
+    
+    
+    finalNum = inputLastNum.value;
+    console.log(finalNum);
+    inputLastNum.value = "";
+    
+    if(validateNums(firstNum, finalNum))
+    {
+        //document.body.innerHTML = '';
+        console.log(firstNum, finalNum);
+        sweetSalt(firstNum, finalNum);
+    }
+   
+});
+
+function validateNums(firstNum, finalNum){
+    
+    if(firstNum < 0 || finalNum < 0)
+    {
+        document.body.appendChild(alertMessage);
+        alertMessage.innerHTML = "Can't have negatives numbers! try again.";
+        alertMessage.className = 'alerts';
+        return false;
+    }
+    else if((finalNum - firstNum) < 200)
+    {
+        document.body.appendChild(alertMessage);
+        alertMessage.innerText = "Values must have a range greater than 200. Try again!";
+        alertMessage.className = 'alerts';
+        return false;
+    }
+    else if ((finalNum - firstNum) > 10000)
+    {
+        document.body.appendChild(alertMessage);
+        alertMessage.innerText = "Range must be smaller than 10000. Try again!"
+        alertMessage.className = 'alerts';
+        return false;
+    }
+    else if(firstNum >= finalNum){
+        document.body.appendChild(alertMessage);
+        console.log(finalNum);
+        alertMessage.innerText = "starting number cannot be greater than the final number. Try again!"
+        alertMessage.className = 'alerts';
+        return false;
+    }
+    //the check for the firstnum is greater than finalnum was giving me a weird bug
+    //couldn't fix in time.
+    else return true;
+}
+
+function validateIfNegative(firstNum, finalNum){
+
+       if(firstNum < 0 && finalNum < 0){
+           document.body.appendChild(alertMessage);
+           alertMessage.innerText = "Can't have negatives numbers! try again.";
+            return false;
+       } 
+       else return true;
+}
+
+
+
+function sweetSalt(firstNum, finalNum){
+    
+    document.body.innerHTML = '';
+    let threeAndFiveCounter = 0;
+    let threeCounter = 0;
+    let fiveCounter = 0;
+    let f = firstNum;
+    let b = 1; //for keeping line numbers to 40
+    let array = new Array();
+    
+    while(f <= finalNum) {
+        
+        while(b <= 40 && f <= finalNum){ //Credit to Robert
+                
+                
+            if(f % 3 == 0 && f % 5 == 0)
+            {
+                array.push(" <span>SweetN'Salty</span>");
+                threeAndFiveCounter++;
+            }
+            else if (f % 3 == 0)
+            { 
+                array.push(" <span>Sweet</span>");
+                threeCounter++;
+            }
+            else if (f % 5 == 0)
+            {
+                array.push(" <span>Salty</span>");
+                fiveCounter++;
+            }   
+            else
+            {
+                if (f < 1000)
+                {
+                    array.push(` ${f}`);
+                }
+                else
+                {
+                    array.push(` ${f.toLocaleString()}`)
+                }
+            }
+            b++;
+            f++;
+        }
+        b = 1;  
+        console.log("length of the long, big array bb: " + array.length);
+        newPara = document.createElement('p');
+        document.body.appendChild(newPara);
+        newPara.innerHTML = array.toString();
+        array = [];
+            
+    }   
+    console.log(`There were ${threeCounter} salties`);
+    console.log(`There were ${fiveCounter} salties`);
+    console.log(`There were ${threeAndFiveCounter} sweetn'salties`);
+    
+    document.body.appendChild(finalSweetText);
+    finalSweetText.innerText = ` ${threeCounter} sweeties`;
+    finalSweetText.className = 'results';
+    document.body.appendChild(finalSaltyText);
+    finalSaltyText.innerText = ` ${fiveCounter} salties`;
+    finalSaltyText.className = 'results';
+    document.body.appendChild(finalSweetnSaltyText);
+    finalSweetnSaltyText.innerText = ` ${threeAndFiveCounter} Sweet N' Salties`;
+    finalSweetnSaltyText.className = 'results';   
+        
+    document.body.appendChild(restartButton);
+                
+}
+
+restartButton.addEventListener('click', () =>  {
+
+    location.reload();
+
+});
+
+
+    </script>
+</body>
+</html>
