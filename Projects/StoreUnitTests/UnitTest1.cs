@@ -11,9 +11,17 @@ namespace StoreUnitTests
         [Fact]
         public void Test1()
         {
+            //arrange
+            //because of dependency inversion, you can create a random class that implements
+            // the correct interface
+            IDatabaseAccess mockDbAccess = new MockDbAccess();
+            //THEN, use the "correct interface" implementing class that imlements those methods differently
+            DataManager dataManager = new DataManager(mockDbAccess);
 
-            MockDbAccess mockDbAccess = new MockDbAccess();
-            DatabaseAccess databaseAccess = new DatabaseAccess();
+            //act
+            //var result = dataManager.getActiveCustomer()
+
+            //assert
 
 
             //List<Products> products = mockDbAccess.displayProducts1();

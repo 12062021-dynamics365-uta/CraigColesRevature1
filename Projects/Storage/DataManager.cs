@@ -20,13 +20,15 @@ namespace Storage
         List<ShoppingCart> cart;
         public CartItems productID { get; set; }
         
-        
         List<CartItems> cartItems;
+        
         private readonly IDatabaseAccess _databaseAccess;
 
+        private readonly IMapper _mapper;
 
 
-        public DataManager(IDatabaseAccess dba)
+
+        public DataManager(IDatabaseAccess dba, IMapper mapper)
         {
             productID = new CartItems();
             currentStore = new Stores();
@@ -35,6 +37,7 @@ namespace Storage
             cartItems = new List<CartItems>();
             currentOrder = new Orders();
             this._databaseAccess = new DatabaseAccess();
+            this._mapper = new Mapper();
         }
 
         public void getActiveCustomer(string FirstName, string LastName)

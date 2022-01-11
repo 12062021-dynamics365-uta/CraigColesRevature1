@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace StoreUnitTests
 {
-    public class MockDbAccess
+    public class MockDbAccess : IDatabaseAccess
     {
         public void displayActiveCustomers()
         {
-
+            int CustomerID = 0;
+            CustomerID = this._databaseAccess.getActiveCustomerID(FirstName, LastName);
         }
 
        
