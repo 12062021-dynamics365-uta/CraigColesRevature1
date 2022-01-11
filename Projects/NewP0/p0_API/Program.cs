@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SweetnSaltyAPI
+namespace p0_API
 {
     public class Program
     {

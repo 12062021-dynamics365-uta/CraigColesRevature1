@@ -7,14 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using SweetnSaltyBusiness;
-using SweetnSaltyDbAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SweetnSaltyAPI
+namespace p0_API
 {
     public class Startup
     {
@@ -28,18 +26,14 @@ namespace SweetnSaltyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /**
-             * here you need to register interfaces and classes with the dependency injection system
-             */
-            services.AddScoped<ISweetnSaltyBusinessClass, SweetnSaltyBusinessClass>();
-            services.AddScoped<ISweetnSaltyDbAccessClass, SweetnSaltyDbAccessClass>();
-            services.AddScoped<IMapper, Mapper>();
-
+            //this is where you will add
+            //// DI (dependency Injection)
+            //// CORS
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SweetnSaltyAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "p0_API", Version = "v1" });
             });
         }
 
@@ -50,19 +44,23 @@ namespace SweetnSaltyAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SweetnSaltyAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "p0_API v1"));
             }
 
             app.UseHttpsRedirection();
+            //app.useCores()
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            
+            //UseEndPoint()^^^^
+            //// it has access to an array that contains all the controllers
+            //// it will call this method on every endpoint in that array
+            //// THAT will create an array of all mapped endpoints available at that complilation.
+
         }
     }
 }
